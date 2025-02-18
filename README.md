@@ -1,4 +1,4 @@
-# AspnetcoreAngularCodepulse
+# Full Stack Web Application with Angular, ASP.NET Core Web API, Entity Framework Core, C# REST AP - Codepulse
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.7.
 
