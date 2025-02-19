@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AddCategoryRequest } from '../models/add-category-request.models';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../services/category.service';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-category',
@@ -11,10 +12,13 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './add-category.component.css'
 })
 
-export class AddCategoryComponent {
+export class AddCategoryComponent implements OnDestroy {
 
  // add model
  model: AddCategoryRequest;
+
+ // add unsubcribe from observables
+ private addCategorySubscription ?: Subscription;
 
  // add constructor
  constructor(private categoryService: CategoryService, private http: HttpClient) {
@@ -23,10 +27,10 @@ export class AddCategoryComponent {
     urlHandle: ''
    }
  }
- 
+
  // add onFormSubmit
   onFormSubmit(){
-    this.categoryService.addCategory(this.model)
+    this.addCategorySubscription = this.categoryService.addCategory(this.model)
     .subscribe({
       next: (response) => {
         alert('Category Added Successfully');
@@ -37,4 +41,9 @@ export class AddCategoryComponent {
       }
     });
   }
+
+  ngOnDestroy(): void {
+   this.addCategorySubscription?.unsubscribe();
+  }
+ 
 }
