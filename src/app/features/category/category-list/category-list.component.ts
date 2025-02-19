@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
 })
+
 export class CategoryListComponent {
 
 }
