@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { AddCategoryRequest } from '../models/add-category-request.models';
 import { FormsModule } from '@angular/forms';
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-add-category',
@@ -9,4 +11,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddCategoryComponent {
 
+ model: AddCategoryRequest;
+
+ constructor(private categoryService: CategoryService){
+   this.model = {
+    name: '',
+    urlHandle: ''
+   }
+ }
+ 
+  onFormSubmit(){
+    console.log(this.model);
+  }
 }
