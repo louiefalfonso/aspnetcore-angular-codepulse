@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category.models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UpdateCategoryRequest } from '../models/update-category-request.models';
 
 @Component({
   selector: 'app-edit-category',
@@ -19,13 +20,19 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
 
   // add paramsSubscription
   paramsSubscription?: Subscription;
+  editCategorySubscription?: Subscription;
+
+  // add alertMessage and alertType
+ alertMessage: string = '';
+ alertType: string = '';
 
   // add category object
   category?: Category;
 
-  // use ActivatedRoute to get the id of the category to edit
+  // add constructor and inject the necessary services
   constructor(
     private categoryService: CategoryService,
+     private router: Router,
     private route : ActivatedRoute,) { }
 
   // implement ngOnInit
@@ -51,12 +58,33 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
 
   // implement onFormSubmit
   onFormSubmit():void{
-    console.log(this.category);
+    const updateCategoryRequest: UpdateCategoryRequest = {
+      name : this.category?.name ?? '',
+      urlHandle : this.category?.urlHandle ?? ''
+    }
+
+    //pass this object to the service
+    if(this.id){
+     this.editCategorySubscription = this.categoryService.updateCategory(this.id, updateCategoryRequest).subscribe({
+        next: () => {
+          this.alertMessage = 'Category Updated Successfully';
+          this.alertType = 'success';
+          this.router.navigateByUrl('/admin/categories');
+        },
+        error: (error) => {
+          console.error(error);
+          alert('An error occurred while updating the category');
+        }
+      });
+    }
+
+   
   }
 
   // implement ngOnDestroy
   ngOnDestroy(): void {
     this.paramsSubscription?.unsubscribe();
+    this.editCategorySubscription?.unsubscribe
   }
 
 }
