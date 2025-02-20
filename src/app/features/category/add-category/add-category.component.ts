@@ -5,10 +5,11 @@ import { CategoryService } from '../services/category.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-category',
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.css'
 })
@@ -20,6 +21,10 @@ export class AddCategoryComponent implements OnDestroy {
 
  // add unsubcribe from observables
  private addCategorySubscription ?: Subscription;
+
+  // add alertMessage and alertType
+ alertMessage: string = '';
+ alertType: string = '';
 
  // add constructor
  constructor(
@@ -37,12 +42,14 @@ export class AddCategoryComponent implements OnDestroy {
     this.addCategorySubscription = this.categoryService.addCategory(this.model)
     .subscribe({
       next: (response) => {
-        alert('Category Added Successfully');
+        this.alertMessage = 'Category Added Successfully';
+        this.alertType = 'success';
         this.router.navigateByUrl('/admin/categories');
       },
       error: (error) => {
         console.error(error);
-        alert('An error occurred while adding the category');
+        this.alertMessage = 'An error occurred while adding the category';
+        this.alertType = 'danger';
       }
     });
   }
