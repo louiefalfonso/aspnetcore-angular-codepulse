@@ -23,10 +23,9 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
   editCategorySubscription?: Subscription;
 
   // add alertMessage and alertType
-
-  private alertMessage: string = '';
-  private alertType: string = '';
-
+  alertMessage: string = '';
+  alertType: string = '';
+  
   // add category object
   category?: Category;
 
@@ -70,7 +69,9 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         next: () => {
           this.alertMessage = 'Category Updated Successfully';
           this.alertType = 'success';
-          this.router.navigateByUrl('/admin/categories');
+          this.router.navigate(['/admin/categories'], {
+            state: { alertMessage: this.alertMessage, alertType: this.alertType }
+          });
         },
         error: (error) => {
           console.error(error);
@@ -80,14 +81,17 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
     }
   }
 
-  
- // implement onDelete
- onDelete(): void {
+  // implement onDelete
+   onDelete(): void {
   if (this.id){
     this.categoryService.deleteCategory(this.id)
     .subscribe({
       next: () => {
-        this.router.navigateByUrl('/admin/categories');
+        this.alertMessage = 'Category Deleted Successfully';
+        this.alertType = 'danger';
+        this.router.navigate(['/admin/categories'], {
+          state: { alertMessage: this.alertMessage, alertType: this.alertType }
+        });
       },
       error: (error) => {
         console.error(error);
@@ -95,7 +99,7 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
       }
     });
   }
-}
+  }
 
 
   // implement ngOnDestroy
