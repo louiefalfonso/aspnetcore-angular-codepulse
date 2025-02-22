@@ -23,7 +23,13 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
   editCategorySubscription?: Subscription;
 
   // add alertMessage and alertType
- alertMessage: string = '';
+ private _alertMessage: string = '';
+  public get alertMessage(): string {
+    return this._alertMessage;
+  }
+  public set alertMessage(value: string) {
+    this._alertMessage = value;
+  }
  alertType: string = '';
 
   // add category object
@@ -77,8 +83,24 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         }
       });
     }
+  }
 
-   
+  // implement onDelete
+  onDelete(): void {
+    if (this.id){
+      this.categoryService.deleteCategory(this.id)
+      .subscribe({
+        next: () => {
+          this.alertMessage = 'Category Deleted Successfully';
+          this.alertType = 'success';
+          this.router.navigateByUrl('/admin/categories');
+        },
+        error: (error) => {
+          console.error(error);
+          alert('An error occurred while deleting the category');
+        }
+      });
+    }
   }
 
   // implement ngOnDestroy
