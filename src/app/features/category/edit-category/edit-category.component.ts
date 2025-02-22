@@ -24,14 +24,8 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
 
   // add alertMessage and alertType
 
-  private _alertMessage: string = '';
-  public get alertMessage(): string {
-    return this._alertMessage;
-  }
-  public set alertMessage(value: string) {
-    this._alertMessage = value;
-  }
- alertMessage: string = '';
+  private alertMessage: string = '';
+  private alertType: string = '';
 
   // add category object
   category?: Category;
@@ -39,7 +33,7 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
   // add constructor and inject the necessary services
   constructor(
     private categoryService: CategoryService,
-     private router: Router,
+    private router: Router,
     private route : ActivatedRoute,) { }
 
   // implement ngOnInit
@@ -84,23 +78,25 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         }
       });
     }
+  }
 
+  
  // implement onDelete
-  onDelete(): void {
-    if (this.id){
-      this.categoryService.deleteCategory(this.id)
-      .subscribe({
-        next: () => {
-          this.alertMessage = 'Category Deleted Successfully';
-          this.alertType = 'success';
-          this.router.navigateByUrl('/admin/categories');
-        },
-        error: (error) => {
-          console.error(error);
-          alert('An error occurred while deleting the category');
-        }
-      });
-    }
+ onDelete(): void {
+  if (this.id){
+    this.categoryService.deleteCategory(this.id)
+    .subscribe({
+      next: () => {
+        this.router.navigateByUrl('/admin/categories');
+      },
+      error: (error) => {
+        console.error(error);
+        alert('An error occurred while deleting the category');
+      }
+    });
+  }
+}
+
 
   // implement ngOnDestroy
   ngOnDestroy(): void {
