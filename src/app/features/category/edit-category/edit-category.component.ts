@@ -23,14 +23,15 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
   editCategorySubscription?: Subscription;
 
   // add alertMessage and alertType
- private _alertMessage: string = '';
+
+  private _alertMessage: string = '';
   public get alertMessage(): string {
     return this._alertMessage;
   }
   public set alertMessage(value: string) {
     this._alertMessage = value;
   }
- alertType: string = '';
+ alertMessage: string = '';
 
   // add category object
   category?: Category;
@@ -83,9 +84,8 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         }
       });
     }
-  }
 
-  // implement onDelete
+ // implement onDelete
   onDelete(): void {
     if (this.id){
       this.categoryService.deleteCategory(this.id)
@@ -101,7 +101,6 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         }
       });
     }
-  }
 
   // implement ngOnDestroy
   ngOnDestroy(): void {
