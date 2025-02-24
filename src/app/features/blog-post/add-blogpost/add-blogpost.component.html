@@ -1,37 +1,47 @@
 <div class="container">
     <h1 class="mt-3">Add Blog Post</h1>
-    <form>
+    <form #form="ngForm" (ngSubmit)="onFormSubmit()">
         <div class="mt-2">
             <div class="mt-3">
                 <label class="form-label">Title:</label>
-                <input type="text" id="title" class="form-control" name="title">
+                <input type="text" id="title" class="form-control" name="title" [(ngModel)]="model.title">
             </div>
             <div class="mt-3">
                 <label class="form-label">Url Handle:</label>
-                <input type="text" id="urlHandle" class="form-control" name="urlHandle">
+                <input type="text" id="urlHandle" class="form-control" name="urlHandle" [(ngModel)]="model.urlHandle">
             </div>
             <div class="mt-3">
                 <label class="form-label">Short Description:</label>
-                <input type="text" id="shortDescription" class="form-control" name="shortDescription">
+                <input type="text" id="shortDescription" class="form-control" name="shortDescription" [(ngModel)]="model.shortDescription">
             </div>
             <div class="mt-3">
                 <label class="form-label">Content:</label>
-                <textarea id="content" class="form-control" name="content"></textarea>
+                <div class="d-flex flex-row">
+                    <div class="col-6 p2">
+                        <textarea id="content" class="form-control" name="content" [(ngModel)]="model.content" style="height: 350px; max-height: 350px;"></textarea>
+                    </div>
+                    <div class="col-6 p2" style="max-height: 350px; overflow-y: scroll;">
+                        <markdown [data]="model.content"></markdown>
+                    </div>
+                </div>
             </div>
             <div class="mt-3">
                 <label class="form-label">Featured Image Url:</label>
-                <input type="text" id="featuredImageUrl" class="form-control" name="featuredImageUrl">
+                    <input type="text" id="featuredImageUrl" class="form-control" name="featuredImageUrl" [(ngModel)]="model.featuredImageUrl">
+                    <ng-container *ngIf="model.featuredImageUrl !=='' ">
+                        <img [src]="model.featuredImageUrl" class="img-thumbnail" alt="Featured Image" style="max-width: 100%; max-height: 100%;">
+                    </ng-container>                
             </div>
             <div class="mt-3">
                 <label class="form-label">Published Date:</label>
-                <input type="date" id="publishedDate" class="form-control" name="publishedDate">
+                <input type="date" id="publishedDate" class="form-control" name="publishedDate" [(ngModel)]="model.publishedDate" (ngModelChange)="model.publishedDate = $event" >
             </div>
             <div class="mt-3">
-                <label class="form-label">Auhtor:</label>
-                <input type="text" id="author" class="form-control" name="author">
+                <label class="form-label">Author:</label>
+                <input type="text" id="author" class="form-control" name="author" [(ngModel)]="model.author">
             </div>
-            <div class=" form-check mt-3">
-                <input class="form-check-input" type="checkbox" id="isPublished" name="isPublished">
+            <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" id="isVisible" name="isVisible" [(ngModel)]="model.isVisible">
                 <label class="form-check-label">Is Visible?</label>
             </div>
             <div class="mt-3">
