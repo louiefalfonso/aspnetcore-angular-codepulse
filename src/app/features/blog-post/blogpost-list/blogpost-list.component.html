@@ -10,6 +10,7 @@
                 <th>Author</th>
                 <th>Published Date</th>
                 <th>Is Visible?</th>
+                <th>Categories</th>
                 <th>Actions</th>
             </thead>
             <tbody>
@@ -18,6 +19,7 @@
                     <td>{{blogPost.author}}</td>
                     <td>{{blogPost.publishedDate | date: 'short'}}</td>
                     <td>{{blogPost.isVisible}}</td>
+                    <td ><span *ngFor="let category of blogPost.categories" class="badge text-bg-secondary mr-2">{{category.name}}</span></td>
                     <td>
                         <a [routerLink]="['/admin/blogposts', blogPost.id]" class="btn btn-primary">Edit</a>
                     </td>
