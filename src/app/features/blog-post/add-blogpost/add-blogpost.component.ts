@@ -1,12 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddBlogPost } from '../models/add-blog-post.model';
 import { BlogPostService } from '../services/blog-post.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MarkdownComponent } from 'ngx-markdown';
+import { CategoryService } from '../../category/services/category.service';
+import { Category } from '../../category/models/category.models';
 
 @Component({
   selector: 'app-add-blogpost',
@@ -15,10 +17,11 @@ import { MarkdownComponent } from 'ngx-markdown';
   styleUrl: './add-blogpost.component.css'
 })
 
-export class AddBlogpostComponent implements OnDestroy {
+export class AddBlogpostComponent implements OnDestroy, OnInit {
 
   // add model
   model: AddBlogPost;
+  categories$?: Observable<Category[]>;
 
   // add unsubcribe from observables
   private addBlogPostSubscription ?: Subscription;
@@ -30,6 +33,7 @@ export class AddBlogpostComponent implements OnDestroy {
   // add constructor
   constructor(
     private blogPostService: BlogPostService, 
+    private categoryService: CategoryService,
     private http: HttpClient,
     private router: Router) {
       this.model = {
@@ -43,6 +47,11 @@ export class AddBlogpostComponent implements OnDestroy {
         isVisible: true,
         categories: []
       }
+  }
+
+  // display all categories
+  ngOnInit(): void {
+   this.categories$ = this.categoryService.getAllCategories();
   }
 
 
