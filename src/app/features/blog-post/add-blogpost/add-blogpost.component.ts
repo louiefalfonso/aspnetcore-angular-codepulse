@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AddBlogPost } from '../models/add-blog-post.model';
+import { AddBlogPostRequest } from '../models/add-blog-post-request.model';
 import { BlogPostService } from '../services/blog-post.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { Category } from '../../category/models/category.models';
 export class AddBlogpostComponent implements OnDestroy, OnInit {
 
   // add model
-  model: AddBlogPost;
+  model: AddBlogPostRequest;
   categories$?: Observable<Category[]>;
 
   // add unsubcribe from observables
