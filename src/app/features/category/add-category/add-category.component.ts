@@ -38,21 +38,30 @@ export class AddCategoryComponent implements OnDestroy {
  }
 
  // add onFormSubmit
-  onFormSubmit(){
-    this.addCategorySubscription = this.categoryService.addCategory(this.model)
+ onFormSubmit() {
+  this.addCategorySubscription = this.categoryService.addCategory(this.model)
     .subscribe({
       next: (response) => {
         this.alertMessage = 'Category Added Successfully';
         this.alertType = 'success';
-        this.router.navigateByUrl('/admin/categories');
+        setTimeout(() => {
+          this.alertMessage = '';
+          this.alertType = '';
+          this.router.navigate(['/admin/categories']);
+        }, 2000);
       },
       error: (error) => {
         console.error(error);
         this.alertMessage = 'An error occurred while adding the category';
         this.alertType = 'danger';
+        setTimeout(() => {
+          this.alertMessage = '';
+          this.alertType = '';
+          this.router.navigate(['/admin/categories']);
+        }, 2000);
       }
     });
-  }
+}
 
   ngOnDestroy(): void {
    this.addCategorySubscription?.unsubscribe();

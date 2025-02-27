@@ -69,36 +69,52 @@ export class EditCategoryComponent  implements OnInit, OnDestroy {
         next: () => {
           this.alertMessage = 'Category Updated Successfully';
           this.alertType = 'success';
-          this.router.navigate(['/admin/categories'], {
-            state: { alertMessage: this.alertMessage, alertType: this.alertType }
-          });
+          setTimeout(() => {
+            this.alertMessage = '';
+            this.alertType = '';
+            this.router.navigate(['/admin/categories']);
+          }, 2000);
         },
         error: (error) => {
           console.error(error);
-          alert('An error occurred while updating the category');
+          this.alertMessage = 'An error occurred while updating the category'
+          this.alertType = 'danger';
+          setTimeout(() => {
+            this.alertMessage = '';
+            this.alertType = '';
+            this.router.navigate(['/admin/categories']);
+          }, 2000);
         }
       });
     }
   }
 
   // implement onDelete
-   onDelete(): void {
-  if (this.id){
-    this.categoryService.deleteCategory(this.id)
-    .subscribe({
-      next: () => {
-        this.alertMessage = 'Category Deleted Successfully';
-        this.alertType = 'danger';
-        this.router.navigate(['/admin/categories'], {
-          state: { alertMessage: this.alertMessage, alertType: this.alertType }
+  onDelete(): void {
+    if (this.id) {
+      this.categoryService.deleteCategory(this.id)
+        .subscribe({
+          next: () => {
+            this.alertMessage = 'Category Deleted Successfully';
+            this.alertType = 'success';
+            setTimeout(() => {
+              this.alertMessage = '';
+              this.alertType = '';
+              this.router.navigate(['/admin/categories']);
+            }, 2000);
+          },
+          error: (error) => {
+            console.error(error);
+            this.alertMessage = 'An error occurred while deleting the category';
+            this.alertType = 'danger';
+            setTimeout(() => {
+              this.alertMessage = '';
+              this.alertType = '';
+              this.router.navigate(['/admin/categories']);
+            }, 2000);
+          }
         });
-      },
-      error: (error) => {
-        console.error(error);
-        alert('An error occurred while deleting the category');
-      }
-    });
-  }
+    }
   }
 
 
