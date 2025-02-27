@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiBaseUrl: process.env['API_BASE_URL'] || ''
+    production: true,
+    apiBaseUrl: process.env['API_BASE_URL_PROD'] || ''
 };

@@ -4,6 +4,7 @@ import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category.models';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -15,11 +16,15 @@ import { Observable } from 'rxjs';
 
 export class CategoryListComponent implements OnInit {
 
+
+  alertMessage: string = '';
+  alertType: string = '';
+
   // use asnyc pipe instead of subscription
   categories$?: Observable<Category[]>;
 
-  constructor(private categoryService: CategoryService){ 
-  }
+  constructor(private categoryService: CategoryService,
+    private route: ActivatedRoute){}
 
   // add ngOnInit
   ngOnInit(): void {
