@@ -8,10 +8,11 @@ import { Observable, Subscription } from 'rxjs';
 import { Category } from '../../category/models/category.models';
 import { CategoryService } from '../../category/services/category.service';
 import { MarkdownComponent } from 'ngx-markdown';
+import { UpdateBlogPostRequest } from '../models/update-blog-post-request.models';
 
 
 @Component({
-  selector: 'app-edit-blogpost',
+  selector: 'app-edit-blogposts',
   imports: [RouterModule, FormsModule, CommonModule, MarkdownComponent],
   templateUrl: './edit-blogpost.component.html',
   styleUrl: './edit-blogpost.component.css'
@@ -25,7 +26,10 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
    selectedCategories?: string[];
 
   // add subscriptions
-  routeSubscription?: Subscription
+  routeSubscription?: Subscription;
+  getBlogPostSubscription?: Subscription;
+  updateBlogPostSubscription?: Subscription;
+  deleteBlogPostSubscription?:Subscription;
 
    // add alertMessage and alertType
   alertMessage: string = '';
@@ -52,9 +56,8 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
   this.routeSubscription = this.route.paramMap.subscribe({
      next : (params) =>{
       this.id = params.get('id');
-
       if(this.id){
-        this.blogPostService.getBlogPostById(this.id).subscribe({
+        this.getBlogPostSubscription = this.blogPostService.getBlogPostById(this.id).subscribe({
           next: (response) =>{
             this.model = response;
             this.selectedCategories = response.categories.map(x => x.id);
@@ -68,13 +71,38 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
 
   // implement onFormSubmit
   onFormSubmit():void{
-
+    if(this.model && this.id){
+      var updateBlogPost: UpdateBlogPostRequest ={
+        author: this.model.author,
+        content: this.model.content,
+        shortDescription: this.model.shortDescription,
+        featuredImageUrl: this.model.featuredImageUrl,
+        isVisible: this.model.isVisible,
+        publishedDate: this.model.publishedDate,
+        title: this.model.title,
+        urlHandle: this.model.urlHandle,
+        categories:this.selectedCategories??[]
+      };
+      this.updateBlogPostSubscription = this.blogPostService.updateBlogPost(this.id, updateBlogPost).subscribe({
+        next: (response) => {
+          this.alertMessage = 'Blog Post Updated Successfully';
+          this.alertType = 'success';
+          this.router.navigate(['/admin/blogposts'], {
+            state: { alertMessage: this.alertMessage, alertType: this.alertType }
+          });
+        },
+        error: (error) => {
+          console.error(error);
+          alert('An error occurred while updating the blog post');
+        }
+      });
+    }
   }
 
   // implement onDelete
   onDelete(): void {
     if(this.id){
-      this.blogPostService.deleteBlogPost(this.id)
+      this.deleteBlogPostSubscription = this.blogPostService.deleteBlogPost(this.id)
       .subscribe({
         next: ()=>{
           this.alertMessage = 'Blog Post Deleted Successfully';
@@ -95,6 +123,9 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
   // implement ngOnDestroy
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
+    this.getBlogPostSubscription?.unsubscribe();
+    this.updateBlogPostSubscription?.unsubscribe();
+    this.deleteBlogPostSubscription?.unsubscribe();
   }
 
 
