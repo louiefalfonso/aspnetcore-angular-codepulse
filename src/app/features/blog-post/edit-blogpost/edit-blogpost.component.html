@@ -48,11 +48,12 @@
                 <div class="mt-3">
                     <label for="categories" class="form-label">Categories:</label>
                     <ng-container *ngIf="categories$ | async as categories">
-                        <select class="form-control" name="categories" id="categories" multiple [(ngModel)]="model.categories">
+                        <select class="form-control" name="categories" id="categories" multiple [(ngModel)]="selectedCategories">
                             <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
                         </select>
                     </ng-container>
                 </div>
+                
                 <div class="m-3 d-flex">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-danger ms-3" (click)="onDelete()">Delete</button>
