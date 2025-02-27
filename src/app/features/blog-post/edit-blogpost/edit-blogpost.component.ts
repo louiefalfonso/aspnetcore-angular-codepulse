@@ -71,6 +71,7 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
 
   // implement onFormSubmit
   onFormSubmit():void{
+    // convert this model to request model
     if(this.model && this.id){
       var updateBlogPost: UpdateBlogPostRequest ={
         author: this.model.author,
@@ -83,6 +84,7 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
         urlHandle: this.model.urlHandle,
         categories:this.selectedCategories??[]
       };
+
       this.updateBlogPostSubscription = this.blogPostService.updateBlogPost(this.id, updateBlogPost).subscribe({
         next: (response) => {
           this.alertMessage = 'Blog Post Updated Successfully';
@@ -104,7 +106,7 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
     if(this.id){
       this.deleteBlogPostSubscription = this.blogPostService.deleteBlogPost(this.id)
       .subscribe({
-        next: ()=>{
+        next: () => {
           this.alertMessage = 'Blog Post Deleted Successfully';
           this.alertType = 'danger';
           this.router.navigate(['/admin/blogposts'], {
@@ -118,7 +120,6 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
       });
     }
   }
-
 
   // implement ngOnDestroy
   ngOnDestroy(): void {
