@@ -62,12 +62,21 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
       next: (response) => {
         this.alertMessage = 'Blog Post Added Successfully';
         this.alertType = 'success';
-        this.router.navigateByUrl('/admin/blogposts');
+        setTimeout(() => {
+          this.alertMessage = '';
+          this.alertType = '';
+          this.router.navigate(['/admin/blogposts']);
+        }, 2000);
       },
       error: (error) => {
         console.error(error);
         this.alertMessage = 'An error occurred while adding the blog post';
         this.alertType = 'danger';
+        setTimeout(() => {
+          this.alertMessage = '';
+          this.alertType = '';
+          this.router.navigate(['/admin/blogposts']);
+        }, 2000);
       }
    });
   }
