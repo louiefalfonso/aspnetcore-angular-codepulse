@@ -89,13 +89,22 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
         next: (response) => {
           this.alertMessage = 'Blog Post Updated Successfully';
           this.alertType = 'success';
-          this.router.navigate(['/admin/blogposts'], {
-            state: { alertMessage: this.alertMessage, alertType: this.alertType }
-          });
+          setTimeout(() => {
+            this.alertMessage = '';
+            this.alertType = '';
+            this.router.navigate(['/admin/blogposts']);
+          }, 2000);
+
         },
         error: (error) => {
           console.error(error);
-          alert('An error occurred while updating the blog post');
+          this.alertMessage = 'An error occurred while updating the blog post'
+          this.alertType = 'danger';
+          setTimeout(() => {
+            this.alertMessage = '';
+            this.alertType = '';
+            this.router.navigate(['/admin/blogposts']);
+          }, 2000);
         }
       });
     }
@@ -108,14 +117,22 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
       .subscribe({
         next: () => {
           this.alertMessage = 'Blog Post Deleted Successfully';
-          this.alertType = 'danger';
-          this.router.navigate(['/admin/blogposts'], {
-            state: { alertMessage: this.alertMessage, alertType: this.alertType }
-          });
+            this.alertType = 'success';
+            setTimeout(() => {
+              this.alertMessage = '';
+              this.alertType = '';
+              this.router.navigate(['/admin/blogposts']);
+            }, 2000);
         },
         error: (error) => {
           console.error(error);
-          alert('An error occurred while deleting the category');
+          this.alertMessage = 'An error occurred while deleting the blog post';
+            this.alertType = 'danger';
+            setTimeout(() => {
+              this.alertMessage = '';
+              this.alertType = '';
+              this.router.navigate(['/admin/blogposts']);
+            }, 2000);
         }
       });
     }
