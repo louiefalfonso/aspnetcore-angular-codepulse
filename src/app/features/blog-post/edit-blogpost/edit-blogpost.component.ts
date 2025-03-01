@@ -9,11 +9,12 @@ import { Category } from '../../category/models/category.models';
 import { CategoryService } from '../../category/services/category.service';
 import { MarkdownComponent } from 'ngx-markdown';
 import { UpdateBlogPostRequest } from '../models/update-blog-post-request.models';
+import { ImageSelectorComponent } from '../../../shared/components/image-selector/image-selector.component';
 
 
 @Component({
   selector: 'app-edit-blogposts',
-  imports: [RouterModule, FormsModule, CommonModule, MarkdownComponent],
+  imports: [RouterModule, FormsModule, CommonModule, MarkdownComponent, ImageSelectorComponent],
   templateUrl: './edit-blogpost.component.html',
   styleUrl: './edit-blogpost.component.css'
 })
@@ -24,12 +25,14 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
    model?: BlogPost;
    categories$?: Observable<Category[]>
    selectedCategories?: string[];
+   isImageSelectorVisible: boolean = false;
 
   // add subscriptions
   routeSubscription?: Subscription;
   getBlogPostSubscription?: Subscription;
   updateBlogPostSubscription?: Subscription;
   deleteBlogPostSubscription?:Subscription;
+  imageSelectSubscription?: Subscription;
 
    // add alertMessage and alertType
   alertMessage: string = '';
@@ -138,12 +141,23 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
     }
   }
 
+  // implement openImageSelector
+  openImageSelector():void{
+    this.isImageSelectorVisible = true;
+  }
+
+  // implement closeImageSelector()
+  closeImageSelector():void{
+    this.isImageSelectorVisible = false;
+  }
+
   // implement ngOnDestroy
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
     this.getBlogPostSubscription?.unsubscribe();
     this.updateBlogPostSubscription?.unsubscribe();
     this.deleteBlogPostSubscription?.unsubscribe();
+    this.imageSelectSubscription?.unsubscribe();
   }
 
 
