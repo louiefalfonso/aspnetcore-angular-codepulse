@@ -10,6 +10,7 @@ import { CategoryService } from '../../category/services/category.service';
 import { MarkdownComponent } from 'ngx-markdown';
 import { UpdateBlogPostRequest } from '../models/update-blog-post-request.models';
 import { ImageSelectorComponent } from '../../../shared/components/image-selector/image-selector.component';
+import { ImageService } from '../../../shared/components/image-selector/image.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
   deleteBlogPostSubscription?:Subscription;
   imageSelectSubscription?: Subscription;
 
+
    // add alertMessage and alertType
   alertMessage: string = '';
   alertType: string = '';
@@ -46,7 +48,8 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
     private blogPostService: BlogPostService,
     private categoryService: CategoryService,
     private router: Router,
-    private route : ActivatedRoute,) { }
+    private route : ActivatedRoute,
+    private imageService: ImageService) { }
 
 
  // implement ngOnInit
@@ -68,8 +71,19 @@ export class EditBlogpostComponent  implements OnInit, OnDestroy{
         });
       }
 
+     this.imageSelectSubscription = this.imageService.onSelectImage().subscribe({
+        next: (response) => { 
+          if(this.model){
+            this.model.featuredImageUrl = response.url;
+            this.isImageSelectorVisible = false;
+          }
+        }  
+      })
+
      }
    })
+
+
   }
 
   // implement onFormSubmit
