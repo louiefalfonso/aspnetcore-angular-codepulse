@@ -9,10 +9,12 @@ import { Observable, Subscription } from 'rxjs';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category.service';
 import { Category } from '../../category/models/category.models';
+import { ImageSelectorComponent } from '../../../shared/components/image-selector/image-selector.component';
+import { ImageService } from '../../../shared/components/image-selector/image.service';
 
 @Component({
   selector: 'app-add-blogpost',
-  imports: [FormsModule,CommonModule, MarkdownComponent],
+  imports: [FormsModule,CommonModule, MarkdownComponent, ImageSelectorComponent],
   templateUrl: './add-blogpost.component.html',
   styleUrl: './add-blogpost.component.css'
 })
@@ -22,9 +24,11 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   // add model
   model: AddBlogPostRequest;
   categories$?: Observable<Category[]>;
+  isImageSelectorVisible: boolean = false;
 
   // add unsubcribe from observables
   private addBlogPostSubscription ?: Subscription;
+  private imageSelectorSubscription?: Subscription;
 
   // add alertMessage and alertType
  alertMessage: string = '';
@@ -34,6 +38,7 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   constructor(
     private blogPostService: BlogPostService, 
     private categoryService: CategoryService,
+    private imageService: ImageService,
     private http: HttpClient,
     private router: Router) {
       this.model = {
@@ -52,6 +57,12 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
   // display all categories
   ngOnInit(): void {
    this.categories$ = this.categoryService.getAllCategories();
+   this.imageSelectorSubscription = this.imageService.onSelectImage().subscribe({
+    next: (selectedImage) => {
+      this.model.featuredImageUrl = selectedImage.url;
+      this.closeImageSelector();
+      },
+   })
   }
 
 
@@ -81,8 +92,19 @@ export class AddBlogpostComponent implements OnDestroy, OnInit {
    });
   }
 
+  // implement openImageSelector
+  openImageSelector():void{
+    this.isImageSelectorVisible = true;
+  }
+
+  // implement closeImageSelector()
+  closeImageSelector():void{
+    this.isImageSelectorVisible = false;
+  }
+
   ngOnDestroy(): void {
     this.addBlogPostSubscription?.unsubscribe();
+    this.imageSelectorSubscription?.unsubscribe();
   }
 
 }
