@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 import { BlogPostService } from '../../blog-post/services/blog-post.service';
-import { Observable } from 'rxjs';
 import { BlogPost } from '../../blog-post/models/blog-post.model';
 
 

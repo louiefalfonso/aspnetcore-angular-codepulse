@@ -38,4 +38,10 @@ export class BlogPostService {
   deleteBlogPost(id: string) : Observable<BlogPost>{
     return this.http.delete<BlogPost>(`${environment.apiBaseUrl}/blogposts/${id}`);
   }
+
+  // get blog post by Url Handle
+  getBlogPostByUrlHandle(urlHandle: string) : Observable<BlogPost>{
+    return this.http.get<BlogPost>(`${environment.apiBaseUrl}/blogposts/${urlHandle}`);
+  }
+  
 }
